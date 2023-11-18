@@ -1,6 +1,12 @@
-import express from 'express';
-import { StudentController } from './student.controller';
+import express from "express";
+import { StudentControllers } from "./student.controller";
 
-const router = express.Router()
+const router = express.Router();
 
-router.post("/create_student", StudentController.createAStudent)
+router.post("/create-student", StudentControllers.createAStudent);
+
+router.get("/", StudentControllers.getAllStudents);
+
+router.get("/:studentId", StudentControllers.getSingleStudent);
+
+export const StudentRoutes = router;
