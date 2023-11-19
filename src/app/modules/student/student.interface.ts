@@ -29,12 +29,12 @@ export type Student = {
   dateOfBirth: string;
   email: string;
   contactNo: string;
-  emergerncyContact: string;
+  emergencyContact: string;
   bloodGroup?: BloodGroup;
   presentAddress: string;
   permanentAddress: string;
   guardian: Guardian;
   localGuardian: LocalGuardian
   profileImg : string
-  isActive: "Active" | "Inactive"
+  isActive: "active" | "blocked"
 };
