@@ -1,13 +1,15 @@
 import { Schema, model } from "mongoose";
 import {
-  Guardian,
-  LocalGuardian,
-  Student,
-  UserName,
+  TGuardian,
+  TLocalGuardian,
+  TStudent,
+  //StudentMethods,
+  StudentModel,
+  TUserName,
 } from "./student.interface";
 // import validator from "validator";
 
-const userNameSchema = new Schema<UserName>({
+const userNameSchema = new Schema<TUserName>({
   firstName: {
     type: String,
     required: [true, "First Name is required"],
@@ -36,7 +38,7 @@ const userNameSchema = new Schema<UserName>({
   },
 });
 
-const guardianSchema = new Schema<Guardian>({
+const guardianSchema = new Schema<TGuardian>({
   fatherName: {
     type: String,
     required: true,
@@ -69,7 +71,7 @@ const guardianSchema = new Schema<Guardian>({
   },
 });
 
-const localGuardianSchema = new Schema<LocalGuardian>({
+const localGuardianSchema = new Schema<TLocalGuardian>({
   name: {
     type: String,
     required: true,
@@ -88,7 +90,12 @@ const localGuardianSchema = new Schema<LocalGuardian>({
   },
 });
 
-const studentSchema = new Schema<Student>({
+// for instance methods
+
+// const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
+// for static methods
+
+const studentSchema = new Schema<TStudent, StudentModel>({
   id: {
     type: String,
     required: true,
@@ -155,10 +162,22 @@ const studentSchema = new Schema<Student>({
   isActive: {
     type: String,
     enum: ["active", "blocked"],
-    default: "active",
+    //default: "active",
   },
 });
 
-const StudentModel = model<Student>("Student", studentSchema);
+// creating a custom static method
+studentSchema.statics.isUserExists = async function (id: string) {
+  const existingUser = await Student.findOne({ id });
+  return existingUser;
+};
 
-export default StudentModel;
+// creating a custom instance method
+// studentSchema.methods.isUserExists = async function (id: string) {
+//   const existingUser = await Student.findOne({ id });
+//   return existingUser;
+// };
+
+const Student = model<TStudent, StudentModel>("Student", studentSchema);
+
+export default Student;

@@ -1,30 +1,37 @@
 import { Request, Response } from "express";
 import { StudentServices } from "./student.service";
-import studentValidationSchema from "./student.validation";
+// import { z } from "zod";
+import studentZodValidationSchema from "./student.zod.validation";
+// import studentValidationSchema from "./student.validation";
 
 const createAStudent = async (req: Request, res: Response) => {
   try {
     const { student: studentData } = req.body;
-    const { error, value } = studentValidationSchema.validate(studentData);
-    const result = await StudentServices.createStudentintoDb(value);
+    //data validation using zod
+    const zodParsedData = studentZodValidationSchema.parse(studentData);
 
-    if (error) {
-      res.status(500).json({
-        success: false,
-        message: "error is detected with joi",
-        error: error.details,
-      });
-    }
+    // data validation using joi
+    // const { error, value } = studentValidationSchema.validate(studentData);
+
+    // if (error) {
+    //   res.status(500).json({
+    //     success: false,
+    //     message: "error is detected with joi",
+    //     error: error.details,
+    //   });
+    // }
+
+    const result = await StudentServices.createStudentintoDb(zodParsedData);
 
     res.status(200).json({
       success: true,
       message: "Student data is created successfully",
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: "things just got out off hand",
+      message: err.message || "things just got out off hand",
       err,
     });
   }

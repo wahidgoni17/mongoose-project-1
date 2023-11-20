@@ -1,6 +1,6 @@
 import Joi from "joi";
 // create a schema validation using joi
-const userNameValidationSchema = Joi.object({
+const userNameJoiValidationSchema = Joi.object({
   firstName: Joi.string()
     .required()
     .max(20)
@@ -25,7 +25,7 @@ const userNameValidationSchema = Joi.object({
     }),
 });
 
-const guardianValidationSchema = Joi.object({
+const guardianJoiValidationSchema = Joi.object({
   fatherName: Joi.string().required().trim(),
   fatherOccupation: Joi.string().required().trim(),
   fatherContactNo: Joi.string().required().trim(),
@@ -34,16 +34,16 @@ const guardianValidationSchema = Joi.object({
   motherContactNo: Joi.string().required().trim(),
 });
 
-const localGuardianValidationSchema = Joi.object({
+const localGuardianJoiValidationSchema = Joi.object({
   name: Joi.string().required(),
   occupation: Joi.string().required(),
   contactNo: Joi.string().required(),
   address: Joi.string().required(),
 });
 
-const studentValidationSchema = Joi.object({
+const studentJoiValidationSchema = Joi.object({
   id: Joi.string().required(),
-  name: userNameValidationSchema.required().messages({
+  name: userNameJoiValidationSchema.required().messages({
     "any.required": "Name Field is required",
   }),
   gender: Joi.string().valid("Male", "Female", "other").required().messages({
@@ -75,10 +75,10 @@ const studentValidationSchema = Joi.object({
     }),
   presentAddress: Joi.string().required(),
   permanentAddress: Joi.string().required(),
-  guardian: guardianValidationSchema.required(),
-  localGuardian: localGuardianValidationSchema.required(),
+  guardian: guardianJoiValidationSchema.required(),
+  localGuardian: localGuardianJoiValidationSchema.required(),
   profileImg: Joi.string().required(),
   isActive: Joi.string().valid("active", "blocked").default("active"),
 });
 
-export default studentValidationSchema
+export default studentJoiValidationSchema;
