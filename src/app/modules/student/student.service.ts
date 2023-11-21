@@ -13,8 +13,8 @@ const createStudentintoDb = async (studentData: TStudent) => {
   // if (await student.isUserExists(studentData.id)) {
   //   throw new Error("User is already Exits");
   // }
-
   // const result = await student.save(); //builtIn instance method
+
   return result;
 };
 
@@ -23,13 +23,26 @@ const getAllStudentsFromDb = async () => {
   return result;
 };
 
-const getSingleStudentsFromDb = async (id: string) => {
-  const result = await Student.findOne({ id });
+const getSingleStudentFromDb = async (id: string) => {
+  // const result = await Student.findOne({ id });
+  const result = await Student.aggregate([{ $match: { id: id } }]);
+  return result;
+};
+
+const updateStudentFromDb = async (id: string, updateData: TStudent) => {
+  const result = await Student.updateOne({ id }, updateData);
+  return result;
+};
+
+const deleteStudentFromDb = async (id: string) => {
+  const result = await Student.updateOne({ id }, { isDeleted: true });
   return result;
 };
 
 export const StudentServices = {
   createStudentintoDb,
   getAllStudentsFromDb,
-  getSingleStudentsFromDb,
+  getSingleStudentFromDb,
+  updateStudentFromDb,
+  deleteStudentFromDb,
 };

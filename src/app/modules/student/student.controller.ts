@@ -28,6 +28,7 @@ const createAStudent = async (req: Request, res: Response) => {
       message: "Student data is created successfully",
       data: result,
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -46,21 +47,66 @@ const getAllStudents = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "things just got out off hand",
+      error,
+    });
   }
 };
 
 const getSingleStudent = async (req: Request, res: Response) => {
   try {
     const { studentId } = req.params;
-    const result = await StudentServices.getSingleStudentsFromDb(studentId);
+    const result = await StudentServices.getSingleStudentFromDb(studentId);
     res.status(200).json({
       success: true,
       message: "Student is retrive successfully",
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "things just got out off hand",
+      error,
+    });
+  }
+};
+
+const updateStudent = async (req: Request, res: Response) => {
+  try {
+    const { updateInfo: updateData } = req.body;
+    const { id } = req.params;
+    const result = await StudentServices.updateStudentFromDb(id, updateData);
+    res.status(200).json({
+      success: true,
+      message: "Student Data updated Successfully",
+      result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "things just got out off hand",
+      error,
+    });
+  }
+};
+
+const deleteStudent = async (req: Request, res: Response) => {
+  try {
+    const { studentId } = req.params;
+    const result = await StudentServices.deleteStudentFromDb(studentId);
+    res.status(200).json({
+      success: true,
+      message: "Student is deleted successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "things just got out off hand",
+      error,
+    });
   }
 };
 
@@ -68,4 +114,6 @@ export const StudentControllers = {
   createAStudent,
   getAllStudents,
   getSingleStudent,
+  updateStudent,
+  deleteStudent,
 };
