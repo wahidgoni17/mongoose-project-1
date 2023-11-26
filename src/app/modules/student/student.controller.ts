@@ -1,44 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { StudentServices } from "./student.service";
-// import { z } from "zod";
-import studentZodValidationSchema from "./student.zod.validation";
-// import studentValidationSchema from "./student.validation";
 
-const createAStudent = async (req: Request, res: Response) => {
-  try {
-    const { student: studentData } = req.body;
-    //data validation using zod
-    const zodParsedData = studentZodValidationSchema.parse(studentData);
-
-    // data validation using joi
-    // const { error, value } = studentValidationSchema.validate(studentData);
-
-    // if (error) {
-    //   res.status(500).json({
-    //     success: false,
-    //     message: "error is detected with joi",
-    //     error: error.details,
-    //   });
-    // }
-
-    const result = await StudentServices.createStudentintoDb(zodParsedData);
-
-    res.status(200).json({
-      success: true,
-      message: "Student data is created successfully",
-      data: result,
-    });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || "things just got out off hand",
-      err,
-    });
-  }
-};
-
-const getAllStudents = async (req: Request, res: Response) => {
+const getAllStudents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const result = await StudentServices.getAllStudentsFromDb();
     res.status(200).json({
@@ -47,15 +14,15 @@ const getAllStudents = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "things just got out off hand",
-      error,
-    });
+    next(error);
   }
 };
 
-const getSingleStudent = async (req: Request, res: Response) => {
+const getSingleStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { studentId } = req.params;
     const result = await StudentServices.getSingleStudentFromDb(studentId);
@@ -65,15 +32,15 @@ const getSingleStudent = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "things just got out off hand",
-      error,
-    });
+    next(error);
   }
 };
 
-const updateStudent = async (req: Request, res: Response) => {
+const updateStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { updateInfo: updateData } = req.body;
     const { id } = req.params;
@@ -84,15 +51,15 @@ const updateStudent = async (req: Request, res: Response) => {
       result,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "things just got out off hand",
-      error,
-    });
+    next(error);
   }
 };
 
-const deleteStudent = async (req: Request, res: Response) => {
+const deleteStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { studentId } = req.params;
     const result = await StudentServices.deleteStudentFromDb(studentId);
@@ -102,16 +69,11 @@ const deleteStudent = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "things just got out off hand",
-      error,
-    });
+    next(error);
   }
 };
 
 export const StudentControllers = {
-  createAStudent,
   getAllStudents,
   getSingleStudent,
   updateStudent,
