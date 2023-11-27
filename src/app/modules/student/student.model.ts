@@ -81,7 +81,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       type: Schema.Types.ObjectId,
       required: [true, "user id is required"],
       unique: true,
-      ref: "User"
+      ref: "User",
     },
     name: {
       type: userNameSchema,
@@ -96,8 +96,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       required: true,
     },
     dateOfBirth: {
-      type: String,
-      required: [true, "Date of Birth Field is required"],
+      type: Date,
     },
     email: {
       type: String,

@@ -1,33 +1,21 @@
-import { NextFunction, Request, Response } from "express";
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { NextFunction, Request, RequestHandler, Response } from "express";
 import { UserServices } from "./user.service";
 import sendRespose from "../../utils/sendresponse";
 import httpStatus from "http-status";
+import catchAsync from "../../utils/catchAsync";
 
-const createAStudent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const { password, student: studentData } = req.body;
-
-    //data validation using zod
-    //   const zodParsedData = studentZodValidationSchema.parse(studentData);
-
-    const result = await UserServices.createStudentintoDb(
-      password,
-      studentData,
-    );
-    sendRespose(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: "Student data is created successfully",
-      data: result,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+const createAStudent = catchAsync(async (req, res, next) => {
+  const { password, student: studentData } = req.body;
+  const result = await UserServices.createStudentintoDb(password, studentData);
+  sendRespose(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Student data is created successfully",
+    data: result,
+  });
+});
 
 export const UserController = {
   createAStudent,
