@@ -27,7 +27,7 @@ type TBloodGroup = "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
 export type TStudent = {
   id: string;
   name: TUserName;
-  user: Types.ObjectId
+  user: Types.ObjectId;
   gender: "Male" | "Female" | "other";
   dateOfBirth: Date;
   email: string;
@@ -38,6 +38,7 @@ export type TStudent = {
   permanentAddress: string;
   guardian: TGuardian;
   localGuardian: TLocalGuardian;
+  admissionSemester: Types.ObjectId;
   profileImg?: string;
   isDeleted: boolean;
 };
