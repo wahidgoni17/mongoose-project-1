@@ -12,7 +12,7 @@ app.use(cors());
 app.use("/api/v1", router);
 
 const getAController = (req: Request, res: Response) => {
-  res.send("Hello World!");
+  res.send("Welcome to The PH University");
 };
 
 app.get("/", getAController);
