@@ -25,9 +25,9 @@ const getSingleStudent = catchAsync(async (req, res) => {
 });
 
 const updateStudent = catchAsync(async (req, res) => {
-  const { updateInfo: updateData } = req.body;
-  const { id } = req.params;
-  const result = await StudentServices.updateStudentFromDb(id, updateData);
+  const { studentId } = req.params;
+  const { student } = req.body;
+  const result = await StudentServices.updateStudentIntoDb(studentId, student);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

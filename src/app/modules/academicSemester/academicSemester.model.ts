@@ -5,7 +5,7 @@ import {
   AcademicSemesterName,
   Months,
 } from "./academicSemester.constant";
-import AppError from "../../errors/appError";
+import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 
 const academicSemesterSchema = new Schema<TAcademicSemester>(
