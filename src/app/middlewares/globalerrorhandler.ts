@@ -7,7 +7,7 @@ const GlobalErrorHandler = (
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   next: NextFunction,
 ) => {
-  const statusCode = 500;
+  const statusCode = err.statusCode || 500;
   const message = err.message || "things just got out of hand";
   return res.status(statusCode).json({
     success: false,
@@ -16,4 +16,4 @@ const GlobalErrorHandler = (
   });
 };
 
-export default GlobalErrorHandler
+export default GlobalErrorHandler;
