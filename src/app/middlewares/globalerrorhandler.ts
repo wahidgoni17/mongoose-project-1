@@ -8,10 +8,11 @@ import handleZodError from "../handlers/handleZodError";
 import handleValidationError from "../handlers/handleValidationError";
 import handleCastError from "../handlers/handleCastError";
 import handleDuplicateError from "../handlers/handleDuplicateError";
+import AppError from "../errors/AppError";
 
 const GlobalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  let statusCode = err.statusCode || 500;
-  let message = err.message || "things just got out of hand";
+  let statusCode = 500;
+  let message = "things just got out of hand";
   let errorSources: TErrorSources = [
     {
       path: "",
@@ -39,7 +40,27 @@ const GlobalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSources = simplifiedError?.errorSources;
+  } else if (err instanceof AppError) {
+    const simplifiedError = handleDuplicateError(err);
+    statusCode = err?.statusCode;
+    message = err.message;
+    errorSources = [
+      {
+        path: "",
+        message: err?.message,
+      },
+    ];
+  } else if (err instanceof Error) {
+    const simplifiedError = handleDuplicateError(err);
+    message = err.message;
+    errorSources = [
+      {
+        path: "",
+        message: err?.message,
+      },
+    ];
   }
+
   return res.status(statusCode).json({
     success: false,
     message,
