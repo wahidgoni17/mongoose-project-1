@@ -79,7 +79,7 @@ const updatelocalGuardianValidationSchema = z.object({
 const updateStudentValidationSchema = z.object({
   body: z.object({
     student: z.object({
-      name: updateuserNameValidationSchema,
+      name: updateuserNameValidationSchema.optional(),
       gender: z.enum(["Male", "Female", "other"]).optional(),
       dateOfBirth: z.string().optional(),
       email: z.string().email().optional(),

@@ -1,10 +1,5 @@
 import { Model, Types } from "mongoose";
-
-export type TUserName = {
-  firstName: string;
-  middleName?: string;
-  lastName: string;
-};
+import { TUserName } from "../user/user.interface";
 
 export type TGuardian = {
   fatherName: string;
@@ -22,7 +17,7 @@ export type TLocalGuardian = {
   address: string;
 };
 
-type TBloodGroup = "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
+export type TBloodGroup = "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
 
 export type TStudent = {
   id: string;

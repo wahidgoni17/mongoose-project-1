@@ -1,3 +1,9 @@
+export type TUserName = {
+  firstName: string;
+  middleName?: string;
+  lastName: string;
+};
+
 export type TUser = {
   id: string;
   password: string;

@@ -5,24 +5,9 @@ import {
   TStudent,
   //StudentMethods,
   StudentModel,
-  TUserName,
 } from "./student.interface";
+import { userNameSchema } from "../user/user.model";
 // import validator from "validator";
-
-const userNameSchema = new Schema<TUserName>({
-  firstName: {
-    type: String,
-    required: [true, "First Name is required"],
-  },
-  middleName: {
-    type: String,
-    trim: true,
-  },
-  lastName: {
-    type: String,
-    required: [true, "Last Name is required"],
-  },
-});
 
 const guardianSchema = new Schema<TGuardian>({
   fatherName: {
@@ -149,6 +134,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     },
   },
   {
+    timestamps: true,
     toJSON: {
       virtuals: true,
     },
