@@ -5,7 +5,11 @@ import { TStudent } from "../student/student.interface";
 import Student from "../student/student.model";
 import { TUser } from "./user.interface";
 import User from "./user.model";
-import { generateStudentId } from "./user.utils";
+import {
+  generateAdminId,
+  generateFacultyId,
+  generateStudentId,
+} from "./user.utils";
 import { TAcademicSemester } from "../academicSemester/academicSemester.interface";
 import { startSession } from "mongoose";
 import AppError from "../../errors/AppError";
@@ -14,6 +18,7 @@ import { TFaculty } from "../faculty/faculty.interface";
 import Faculty from "../faculty/faculty.model";
 import { TAdmin } from "../admin/admin.interface";
 import Admin from "../admin/admin.model";
+import AcademicDepartment from "../academicDepartment/academicDepartment.model";
 
 const createStudentintoDb = async (password: string, payload: TStudent) => {
   // create user object
@@ -72,12 +77,22 @@ const createFacultyintoDb = async (password: string, payload: TFaculty) => {
   const userData: Partial<TUser> = {};
   userData.password = password || (config.default_password as string);
   userData.role = "faculty";
-  userData.id = "F-0001";
+
+  // find academic department info
+  const academicDepartment = await AcademicDepartment.findById(
+    payload.academicDepartment,
+  );
+
+  if (!academicDepartment) {
+    throw new AppError(400, "Academic department not found");
+  }
 
   const session = await startSession();
 
   try {
     session.startTransaction();
+
+    userData.id = await generateFacultyId();
 
     const newUser = await User.create([userData], { session });
 
@@ -107,16 +122,18 @@ const createFacultyintoDb = async (password: string, payload: TFaculty) => {
     throw new Error(error);
   }
 };
+
 const createAdminintoDb = async (password: string, payload: TAdmin) => {
   const userData: Partial<TUser> = {};
   userData.password = password || (config.default_password as string);
   userData.role = "admin";
-  userData.id = "A-0001";
 
   const session = await startSession();
 
   try {
     session.startTransaction();
+
+    userData.id = await generateAdminId();
 
     const newUser = await User.create([userData], { session });
 
