@@ -3,7 +3,7 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendresponse";
 import { FacultyServices } from "./faculty.service";
 
-const getAllFaculies = catchAsync(async (req, res) => {
+const getAllFaculties = catchAsync(async (req, res) => {
   const result = await FacultyServices.getAllFacultiesFromDb();
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -37,7 +37,7 @@ const updateFaculty = catchAsync(async (req, res) => {
 });
 
 export const FacultyControllers = {
-  getAllFaculies,
+  getAllFaculties,
   getSingleFaculty,
   updateFaculty,
 };

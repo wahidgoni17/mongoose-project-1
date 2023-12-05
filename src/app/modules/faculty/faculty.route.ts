@@ -5,7 +5,7 @@ import { FacultyValidationSchemas } from "./faculty.validation";
 
 const router = Router();
 
-router.get("/", FacultyControllers.getAllFaculies);
+router.get("/", FacultyControllers.getAllFaculties);
 
 router.get("/:facultyId", FacultyControllers.getSingleFaculty);
 

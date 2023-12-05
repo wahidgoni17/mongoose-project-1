@@ -12,6 +12,8 @@ import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 import { TFaculty } from "../faculty/faculty.interface";
 import Faculty from "../faculty/faculty.model";
+import { TAdmin } from "../admin/admin.interface";
+import Admin from "../admin/admin.model";
 
 const createStudentintoDb = async (password: string, payload: TStudent) => {
   // create user object
@@ -105,8 +107,45 @@ const createFacultyintoDb = async (password: string, payload: TFaculty) => {
     throw new Error(error);
   }
 };
+const createAdminintoDb = async (password: string, payload: TAdmin) => {
+  const userData: Partial<TUser> = {};
+  userData.password = password || (config.default_password as string);
+  userData.role = "admin";
+  userData.id = "A-0001";
+
+  const session = await startSession();
+
+  try {
+    session.startTransaction();
+
+    const newUser = await User.create([userData], { session });
+
+    if (!newUser.length) {
+      throw new AppError(httpStatus.BAD_REQUEST, "Failed To create new user");
+    }
+
+    payload.id = newUser[0].id;
+    payload.user = newUser[0]._id;
+
+    const newAdmin = await Admin.create([payload], { session });
+
+    if (!newAdmin.length) {
+      throw new AppError(httpStatus.BAD_REQUEST, "Failed to create new admin");
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+
+    return newAdmin;
+  } catch (error: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(error);
+  }
+};
 
 export const UserServices = {
   createStudentintoDb,
   createFacultyintoDb,
+  createAdminintoDb,
 };
