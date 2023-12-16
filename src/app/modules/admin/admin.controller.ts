@@ -4,7 +4,8 @@ import sendResponse from "../../utils/sendresponse";
 import { AdminServices } from "./admin.service";
 
 const getAllAdmins = catchAsync(async (req, res) => {
-  const result = await AdminServices.getAllAdminsFromDb();
+  const result = await AdminServices.getAllAdminsFromDb(req.query);
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

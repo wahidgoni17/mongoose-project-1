@@ -1,8 +1,19 @@
+import QueryBuilder from "../../handlers/QueryBuilder";
+import { FacultySearchableFields } from "./faculty.constant";
 import { TFaculty } from "./faculty.interface";
 import Faculty from "./faculty.model";
 
-const getAllFacultiesFromDb = async () => {
-  const result = await Faculty.find().populate("academicDepartment");
+const getAllFacultiesFromDb = async (query: Record<string, unknown>) => {
+  const faculyQuery = new QueryBuilder(
+    Faculty.find().populate("academicDepartment"),
+    query,
+  )
+    .search(FacultySearchableFields)
+    .sort()
+    .paginate()
+    .filter()
+    .fields();
+  const result = await faculyQuery.modelQuery;
   return result;
 };
 
