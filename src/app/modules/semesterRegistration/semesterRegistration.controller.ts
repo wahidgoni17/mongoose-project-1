@@ -18,8 +18,11 @@ const createSemesterRegistration = catchAsync(async (req, res) => {
 });
 
 const getAllSemesterRegistrations = catchAsync(async (req, res) => {
+  console.log("test", req.user);
   const result =
-    await SemesterRegistrationServices.getAllSemesterRegistrationsFromDb(req.query);
+    await SemesterRegistrationServices.getAllSemesterRegistrationsFromDb(
+      req.query,
+    );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

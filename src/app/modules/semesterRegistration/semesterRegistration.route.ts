@@ -2,6 +2,7 @@ import { Router } from "express";
 import validateRequest from "../../middlewares/validateRequest";
 import { SemesterRegistrationValidations } from "./semesterRegistration.validation";
 import { SemesterRegistrationControllers } from "./semesterRegistration.controller";
+import auth from "../../middlewares/auth";
 
 const router = Router();
 
@@ -13,7 +14,11 @@ router.post(
   SemesterRegistrationControllers.createSemesterRegistration,
 );
 
-router.get("/", SemesterRegistrationControllers.getAllSemesterRegistrations);
+router.get(
+  "/",
+  auth(),
+  SemesterRegistrationControllers.getAllSemesterRegistrations,
+);
 
 router.get(
   "/:id",
