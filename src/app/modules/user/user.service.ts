@@ -28,6 +28,7 @@ const createStudentintoDb = async (password: string, payload: TStudent) => {
 
   //set student role
   userData.role = "student";
+  userData.email = payload.email;
 
   const admissionSemester = await AcademicSemester.findById(
     payload.admissionSemester,
@@ -77,6 +78,7 @@ const createFacultyintoDb = async (password: string, payload: TFaculty) => {
   const userData: Partial<TUser> = {};
   userData.password = password || (config.default_password as string);
   userData.role = "faculty";
+  userData.email = payload.email;
 
   // find academic department info
   const academicDepartment = await AcademicDepartment.findById(
@@ -127,6 +129,7 @@ const createAdminintoDb = async (password: string, payload: TAdmin) => {
   const userData: Partial<TUser> = {};
   userData.password = password || (config.default_password as string);
   userData.role = "admin";
+  userData.email = payload.email;
 
   const session = await startSession();
 
