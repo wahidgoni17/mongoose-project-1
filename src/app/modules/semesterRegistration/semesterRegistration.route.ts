@@ -3,6 +3,7 @@ import validateRequest from "../../middlewares/validateRequest";
 import { SemesterRegistrationValidations } from "./semesterRegistration.validation";
 import { SemesterRegistrationControllers } from "./semesterRegistration.controller";
 import auth from "../../middlewares/auth";
+import { USER_ROLE } from "../user/user.constant";
 
 const router = Router();
 
@@ -16,7 +17,7 @@ router.post(
 
 router.get(
   "/",
-  auth(),
+  auth(USER_ROLE.admin),
   SemesterRegistrationControllers.getAllSemesterRegistrations,
 );
 

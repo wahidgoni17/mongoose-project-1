@@ -77,11 +77,21 @@ userSchema.statics.isUserExistsByCustomId = async function (id: string) {
   }).select("+password");
 };
 
-userSchema.statics.isPasswordMatched = async function name(
+userSchema.statics.isPasswordMatched = async function (
   textPassword: string,
   hashPassword: string,
 ) {
   return await bcrypt.compare(textPassword, hashPassword);
+};
+
+userSchema.statics.isJWTIssuedBeforePasswordChanged = async function (
+  passwordChangeTimeStamp: Date,
+  jwtIssuedTimeStamp: number,
+) {
+  const passwordChangedTime =
+    new Date(passwordChangeTimeStamp).getTime() / 1000;
+
+  return passwordChangedTime > jwtIssuedTimeStamp;
 };
 
 const User = model<TUser, UserModel>("User", userSchema);
