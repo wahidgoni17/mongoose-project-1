@@ -120,10 +120,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       type: Schema.Types.ObjectId,
       ref: "AcademicSemester",
     },
-    profileImg: {
-      type: String,
-      required: true,
-    },
+    profileImg: { type: String, default: '' },
     academicDepartment: {
       type: Schema.Types.ObjectId,
       ref: "AcademicDepartment",

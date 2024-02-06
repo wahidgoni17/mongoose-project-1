@@ -19,8 +19,13 @@ import Faculty from "../faculty/faculty.model";
 import { TAdmin } from "../admin/admin.interface";
 import Admin from "../admin/admin.model";
 import AcademicDepartment from "../academicDepartment/academicDepartment.model";
+import { SendImagetoCloudinary } from "../../utils/SendImagetoCloudinary";
 
-const createStudentintoDb = async (password: string, payload: TStudent) => {
+const createStudentintoDb = async (
+  file: any,
+  password: string,
+  payload: TStudent,
+) => {
   // create user object
   const userData: Partial<TUser> = {};
   // if password is not given , use default password
@@ -45,6 +50,15 @@ const createStudentintoDb = async (password: string, payload: TStudent) => {
 
     //create a user(transection - 1)
     const newUser = await User.create([userData], { session });
+
+    if (file) {
+      const imageName = `${userData.id}${payload?.name?.firstName}`;
+      const path = file?.path;
+
+      //send image to cloudinary
+      const { secure_url } = await SendImagetoCloudinary(imageName, path);
+      payload.profileImg = secure_url as string;
+    }
 
     //create a student
     if (!newUser.length) {
@@ -74,7 +88,11 @@ const createStudentintoDb = async (password: string, payload: TStudent) => {
   }
 };
 
-const createFacultyintoDb = async (password: string, payload: TFaculty) => {
+const createFacultyintoDb = async (
+  file: any,
+  password: string,
+  payload: TFaculty,
+) => {
   const userData: Partial<TUser> = {};
   userData.password = password || (config.default_password as string);
   userData.role = "faculty";
@@ -97,6 +115,15 @@ const createFacultyintoDb = async (password: string, payload: TFaculty) => {
     userData.id = await generateFacultyId();
 
     const newUser = await User.create([userData], { session });
+
+    if (file) {
+      const imageName = `${userData.id}${payload?.name?.firstName}`;
+      const path = file?.path;
+
+      //send image to cloudinary
+      const { secure_url } = await SendImagetoCloudinary(imageName, path);
+      payload.profileImg = secure_url as string;
+    }
 
     if (!newUser.length) {
       throw new AppError(httpStatus.BAD_REQUEST, "Failed To create new user");
@@ -125,7 +152,11 @@ const createFacultyintoDb = async (password: string, payload: TFaculty) => {
   }
 };
 
-const createAdminintoDb = async (password: string, payload: TAdmin) => {
+const createAdminintoDb = async (
+  file: any,
+  password: string,
+  payload: TAdmin,
+) => {
   const userData: Partial<TUser> = {};
   userData.password = password || (config.default_password as string);
   userData.role = "admin";
@@ -139,6 +170,15 @@ const createAdminintoDb = async (password: string, payload: TAdmin) => {
     userData.id = await generateAdminId();
 
     const newUser = await User.create([userData], { session });
+
+    if (file) {
+      const imageName = `${userData.id}${payload?.name?.firstName}`;
+      const path = file?.path;
+
+      //send image to cloudinary
+      const { secure_url } = await SendImagetoCloudinary(imageName, path);
+      payload.profileImg = secure_url as string;
+    }
 
     if (!newUser.length) {
       throw new AppError(httpStatus.BAD_REQUEST, "Failed To create new user");

@@ -12,7 +12,7 @@ const createNameValidationSchema = z.object({
 
 const createAdminValidationSchema = z.object({
   body: z.object({
-    password: z.string().max(20),
+    password: z.string().max(20).optional(),
     admin: z.object({
       name: createNameValidationSchema,
       designation: z.string(),

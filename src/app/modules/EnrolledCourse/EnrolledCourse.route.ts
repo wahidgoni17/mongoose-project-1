@@ -20,11 +20,12 @@ router.get("/", EnrolledCourseControllers.getAllEnrolledCourses);
 router.get("/:id", EnrolledCourseControllers.getSingleEnrolledCourse);
 
 router.patch(
-  "/:id",
+  "/update-enrolled-course-marks",
+  auth("faculty"),
   validateRequest(
-    EnrolledCourseValidations.updateEnrolledCourseValidationSchema,
+    EnrolledCourseValidations.updateEnrolledCourseMarksValidationSchema,
   ),
-  EnrolledCourseControllers.updateEnrolledCourse,
+  EnrolledCourseControllers.updateEnrolledCourseMarks,
 );
 
 export const EnrolledCourseRoutes = router;

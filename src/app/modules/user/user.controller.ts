@@ -5,7 +5,11 @@ import catchAsync from "../../utils/catchAsync";
 
 const createAStudent = catchAsync(async (req, res) => {
   const { password, student: studentData } = req.body;
-  const result = await UserServices.createStudentintoDb(password, studentData);
+  const result = await UserServices.createStudentintoDb(
+    req.file,
+    password,
+    studentData,
+  );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -16,7 +20,11 @@ const createAStudent = catchAsync(async (req, res) => {
 
 const createAFaculty = catchAsync(async (req, res) => {
   const { password, faculty: facultyData } = req.body;
-  const result = await UserServices.createFacultyintoDb(password, facultyData);
+  const result = await UserServices.createFacultyintoDb(
+    req.file,
+    password,
+    facultyData,
+  );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -27,7 +35,11 @@ const createAFaculty = catchAsync(async (req, res) => {
 
 const createAnAdmin = catchAsync(async (req, res) => {
   const { password, admin: adminData } = req.body;
-  const result = await UserServices.createAdminintoDb(password, adminData);
+  const result = await UserServices.createAdminintoDb(
+    req.file,
+    password,
+    adminData,
+  );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -63,5 +75,5 @@ export const UserController = {
   createAFaculty,
   createAnAdmin,
   getMe,
-  changeStatus
+  changeStatus,
 };

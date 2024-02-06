@@ -40,17 +40,16 @@ const getSingleEnrolledCourse = catchAsync(async (req, res) => {
   });
 });
 
-const updateEnrolledCourse = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const result = await EnrolledCourseServices.updateEnrolledCourseIntoDb(
-    id,
-    req.body,
-  );
+const updateEnrolledCourseMarks = catchAsync(async (req, res) => {
+  console.log(req.user);
+  // const result = await EnrolledCourseServices.updateEnrolledCourseMarksIntoDb(
+  //   req.body,
+  // );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Enrolled Course is updated successfully",
-    data: result,
+    message: "Course marks is updated successfully",
+    data: null,
   });
 });
 
@@ -58,5 +57,5 @@ export const EnrolledCourseControllers = {
   createEnrolledCourse,
   getAllEnrolledCourses,
   getSingleEnrolledCourse,
-  updateEnrolledCourse,
+  updateEnrolledCourseMarks,
 };
